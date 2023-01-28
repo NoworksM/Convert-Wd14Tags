@@ -14,15 +14,15 @@ let supportedExtensions = [|
 |]
 
 type Arguments =
-    | [<AltCommandLine("-d")>] Debug
-    | [<AltCommandLine("-k")>] KeepOriginals
+    | [<AltCommandLine("-d", "-Debug")>] Debug
+    | [<AltCommandLine("-r", "-Delete")>] DeleteOriginals
     | [<MainCommand; Last>] Paths of paths: string
 
     interface IArgParserTemplate with
         member s.Usage =
             match s with
             | Debug -> "run in debug mode (no files will be changed)"
-            | KeepOriginals -> "keep original files in place instead of removing them"
+            | DeleteOriginals -> "delete original files"
             | Paths _ -> "paths to sort files in"
 
 let parser = ArgumentParser.Create<Arguments>(programName = "Convert-Wd14Tags", helpTextMessage = "fix tag files output by wd14 tagger for use in hydrus network")
@@ -63,11 +63,11 @@ try
     
     let debug = parsedArgs.Contains Debug
     
-    let keepOriginals = parsedArgs.Contains KeepOriginals
+    let deleteOriginals = parsedArgs.Contains DeleteOriginals
     
     let paths = parsedArgs.GetResults Paths
     
-    let rec convertWdTagFileToHydrus path =
+    let convertWdTagFileToHydrus path =
         let wdTagPath = getWdTagFilePath path
         use reader = File.OpenText wdTagPath
         let contents = reader.ReadToEnd()
@@ -83,7 +83,7 @@ try
             
             Encoding.UTF8.GetBytes contents |> writer.Write
             
-        if not <| keepOriginals then
+        if deleteOriginals then
             Console.WriteLine $"deleting \"{Path.GetFileName wdTagPath}\""
             if not <| debug then
                 File.Delete path
