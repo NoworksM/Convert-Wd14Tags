@@ -68,14 +68,15 @@ try
     let paths = parsedArgs.GetResults Paths
     
     let rec convertWdTagFileToHydrus path =
-        use reader = File.OpenText(getWdTagFilePath path)
+        let wdTagPath = getWdTagFilePath path
+        use reader = File.OpenText wdTagPath
         let contents = reader.ReadToEnd()
         
         let contents = contents.Replace(", ", "\n")
         
         let hydrusTagPath = getHydrusTagFilePath path
         
-        Console.WriteLine $"copying tags from \"{Path.GetFileName path}\" to \"{Path.GetFileName hydrusTagPath}\""
+        Console.WriteLine $"copying tags from \"{Path.GetFileName wdTagPath}\" to \"{Path.GetFileName hydrusTagPath}\""
         
         if not <| debug then
             use writer = File.OpenWrite hydrusTagPath
@@ -83,7 +84,7 @@ try
             Encoding.UTF8.GetBytes contents |> writer.Write
             
         if not <| keepOriginals then
-            Console.WriteLine $"deleting \"{Path.GetFileName path}\""
+            Console.WriteLine $"deleting \"{Path.GetFileName wdTagPath}\""
             if not <| debug then
                 File.Delete path
     
