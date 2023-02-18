@@ -5,8 +5,9 @@
         <TargetFramework>net7.0</TargetFramework>
         <RootNamespace>Wd14TagConverter</RootNamespace>
         <PackageId>Convert-Wd14Tags</PackageId>
-        <AssemblyVersion>1.0.1</AssemblyVersion>
-        <FileVersion>1.0.1</FileVersion>
+        <AssemblyVersion>1.0.2</AssemblyVersion>
+        <FileVersion>1.0.2</FileVersion>
+        <Version>1.0.2</Version>
     </PropertyGroup>
 
     <ItemGroup>

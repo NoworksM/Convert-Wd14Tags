@@ -86,7 +86,7 @@ try
         if deleteOriginals then
             Console.WriteLine $"deleting \"{Path.GetFileName wdTagPath}\""
             if not <| debug then
-                File.Delete path
+                File.Delete wdTagPath
     
     paths |> walkPaths |> Seq.filter filterInvalidFiles |> Seq.iter convertWdTagFileToHydrus
 with
